@@ -1,70 +1,66 @@
 <template>
     <div>
-        <b-form @submit.prevent="save" @reset="set_default">    
+        <form @submit.prevent="save" @reset="set_default">
+            <v-row>
+                <v-col> 
+                    <v-row>
+                        <v-col cols="2">
+                            <v-btn color="blue-grey lighten-5" large  title="back" to="/">
+                                <v-icon>
+                                    mdi-chevron-left
+                                </v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col >
+                            <h1 style="margin-left: 30px" class="is-uppercase">
+                                {{  ( is_edit ) ? 'Edit Note' : 'New Note'  }}
+                            </h1>
+                        </v-col>
+                    </v-row>
+                </v-col>
+
+                <v-col class="text-right">
+                    <v-btn type="submit" color="primary" class="mr-2">
+                        <v-icon left>
+                            mdi-content-save
+                        </v-icon>
+                        Save
+                    </v-btn>
+                    <v-btn color="red" outlined type="reset">
+                        <v-icon left>
+                            mdi-restore
+                        </v-icon>
+                        Reset
+                    </v-btn>
+                </v-col>
+            </v-row>
             
-            <b-row class="mb-3">
-                <b-col>
-                    <h1>
-                        <router-link class="btn btn-light bnt-lg mr-3" title="back" to="/">
-                            <b-icon icon="arrow-left-short"></b-icon>
-                        </router-link>
-    
-                        <span v-if="is_edit">
-                            Edit Note    
-                        </span>
-                        
-                        <span v-else>
-                            New Note
-                        </span>
-
-                    </h1>
-                </b-col>
-
-
-                <b-col class="text-right">
-                    <b-button class="mr-2" type="submit" variant="outline-success">Save</b-button>
-                    <b-button type="reset" variant="outline-danger">Reset</b-button>
-                </b-col>
-            </b-row>
-            
-            <b-form-group
-                id="input-group-1"
+            <v-text-field
                 label="Title"
                 label-for="title"
                 description="Title of the note"
-            >
-                <b-form-input
-                id="title"
                 v-model="note.title"
-                type="text"
                 required
                 placeholder="Please enter the title"
-                ></b-form-input>
-            </b-form-group>
-
-            <b-form-group
-                id="input-group-2"
-                label="Content"
-                label-for="Content"
-                description="content of the note"
             >
-                <b-form-textarea
-                    id="textarea"
-                    v-model="note.content"
-                    placeholder="Enter something..."
-                    rows="10"
-                ></b-form-textarea>
-            </b-form-group>
+            </v-text-field>
 
-
-        </b-form>
+            <v-textarea
+                label="Content"
+                solo
+                description="content of the note"
+                v-model="note.content"
+                placeholder="Enter something..." 
+                rows="15"
+                required
+                counter
+            >
+            </v-textarea>
+        </form>
     </div>
 </template>
 
 <script>
-
-const {dialog} = require('electron').remote;
-
 import { store } from "../services/store";
 
 export default {
@@ -90,22 +86,34 @@ export default {
 
             this.set_default()
 
+            this.$store.commit('toast', {
+                active: true,
+                color: 'success',
+                message: 'Note added successfuly',
+                icon: 'mdi-check-circle'
+            })
+
             this.$router.push('/')
 
         },
         edit() {
             store.editNote(this.note);
 
-            dialog.showMessageBox(null, {
-              title: 'Success',
-              type: 'info',
-              buttons: ['Ok'],
-              message: 'Note modification complete'
+            this.$store.commit('toast', {
+                active: true,
+                color: 'purple',
+                message: 'Note changes save successfuly',
+                icon: 'mdi-check-circle'
             })
+
+            this.$router.push('/')
 
         },
         set_default () {
             this.note = {...this.default_note}   
+        },
+        validate () {
+
         }
     },
     beforeMount() {

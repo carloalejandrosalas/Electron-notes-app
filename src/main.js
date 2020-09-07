@@ -1,21 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
-// Bootstrap
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-// Styles
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+// Routes
 import router from './router'
 
+// Vuetify
+import vuetify from './plugins/vuetify';
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+// Store
+import { store } from './store'
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
+  vuetify,
+  store,
   render: h => h(App)
 }).$mount('#app')
