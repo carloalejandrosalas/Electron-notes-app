@@ -87,7 +87,6 @@ export default {
             this.set_default()
 
             this.$store.commit('toast', {
-                active: true,
                 color: 'success',
                 message: 'Note added successfuly',
                 icon: 'mdi-check-circle'
@@ -100,7 +99,6 @@ export default {
             store.editNote(this.note);
 
             this.$store.commit('toast', {
-                active: true,
                 color: 'purple',
                 message: 'Note changes save successfuly',
                 icon: 'mdi-check-circle'
