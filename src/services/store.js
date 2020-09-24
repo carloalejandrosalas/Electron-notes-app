@@ -63,6 +63,17 @@ export const store = {
 
     set(name, value) {
         localStorage.setItem(name, value)
-    }
+    },
 
+    getTags () {
+        return JSON.parse(localStorage.getItem('tags')) || []
+    },
+    
+    addTag (tag) {
+        const tags = this.getTags()
+
+        tags.push(tag)
+
+        localStorage.setItem('tags', JSON.stringify(tags))
+    }
 }

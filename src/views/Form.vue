@@ -12,9 +12,19 @@
                             </v-btn>
                         </v-col>
                         <v-col >
-                            <h1 style="margin-left: 30px" class="is-uppercase">
-                                {{  ( is_edit ) ? 'Edit Note' : 'New Note'  }}
-                            </h1>
+                            <div>
+                                <h1 style="margin-left: 30px">
+                                    <span v-if="is_edit">
+                                        Edit Note 
+                                        <small class="primary--text">
+                                            {{ title }}
+                                        </small>
+                                    </span>
+                                    <span v-else>
+                                        New Note
+                                    </span>
+                                </h1>
+                            </div>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -45,6 +55,31 @@
             >
             </v-text-field>
 
+            <v-row>
+                <v-col cols="11">
+                    <v-autocomplete
+                        v-model="note.tags"
+                        :items="tags"
+                        rounded
+                        outlined
+                        chips
+                        small-chips
+                        label="Tags"
+                        multiple
+                        clearable
+                        deletable-chips
+                        color="purple"
+                    ></v-autocomplete>
+                </v-col>
+                <v-col>
+                    <v-btn @click="showModalTag = true"  dark color="purple"  fab >
+                        <v-icon>
+                            mdi-plus
+                        </v-icon>
+                    </v-btn>
+                </v-col>
+            </v-row>
+
             <v-textarea
                 label="Content"
                 solo
@@ -56,23 +91,33 @@
                 counter
             >
             </v-textarea>
+            <v-dialog  v-model="showModalTag" max-width="290" persistent >
+                <Tag @tagAdded="tagAdded" @close="showModalTag = false"/>
+            </v-dialog>
         </form>
     </div>
 </template>
 
 <script>
 import { store } from "../services/store";
-
+import Tag from '../components/Tag'
 export default {
     name: 'Form',
+    components: {
+        Tag
+    },
     data() {
         return {
             default_note: {
                 title:'',
-                content: ''
+                content: '',
+                tags: ''
             },
             note: {},
-            is_edit: false
+            title: '',
+            is_edit: false,
+            tags: [],
+            showModalTag: false
         }
     },
     methods: {
@@ -110,20 +155,30 @@ export default {
         set_default () {
             this.note = {...this.default_note}   
         },
-        validate () {
-
-        }
+        tagAdded () {
+            this.getTags()
+            this.showModalTag = false
+        },
+        getTags () {
+            this.tags = store.getTags()
+        },
     },
     beforeMount() {
         let note_id = this.$route.params.id;
         
         if(typeof(note_id) === 'undefined') return this.set_default();
 
-        this.note = store.findNote(note_id);
+        const note = store.findNote(note_id);
+
+        this.title =  note.title
+        this.note = note 
 
         this.is_edit = true;
 
         console.log(this.note)
+    },
+    mounted () {
+        this.getTags()
     }
 }
 </script>
