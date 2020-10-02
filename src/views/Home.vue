@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <Search />
     <v-row>
       <v-col v-for="(note, index) in notes" :key="index" cols="12" sm="12" md="6">
         <Note @removedNote="getNotes" :data="note"/>
@@ -21,10 +22,12 @@
 <script>
 import { store } from '../services/store'
 import Note from '../components/Note'
+import Search from '../components/Search'
 export default {
   name: 'Home',
   components: {
-    Note
+    Note,
+    Search
   },
   data () {
     return {
