@@ -49,8 +49,8 @@ export default {
     methods: {
         register () {
             store.addTag(this.name)
+            this.$emit('tagAdded', this.name)
             this.name = ''
-            this.$emit('tagAdded', true)
         },
         cancel () {
             this.$emit('close', true)

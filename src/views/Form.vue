@@ -52,6 +52,7 @@
                 v-model="note.title"
                 required
                 placeholder="Please enter the title"
+                solo
             >
             </v-text-field>
 
@@ -60,7 +61,6 @@
                     <v-autocomplete
                         v-model="note.tags"
                         :items="tags"
-                        rounded
                         outlined
                         chips
                         small-chips
@@ -69,7 +69,9 @@
                         clearable
                         deletable-chips
                         color="purple"
-                    ></v-autocomplete>
+                    >
+                    
+                    </v-autocomplete>
                 </v-col>
                 <v-col>
                     <v-btn @click="showModalTag = true"  dark color="purple"  fab >
@@ -92,7 +94,7 @@
             >
             </v-textarea>
             <v-dialog  v-model="showModalTag" max-width="290" persistent >
-                <Tag @tagAdded="tagAdded" @close="showModalTag = false"/>
+                <Tag @tagAdded="tagAdded($event)" @close="showModalTag = false"/>
             </v-dialog>
         </form>
     </div>
@@ -101,6 +103,13 @@
 <script>
 import { store } from "../services/store";
 import Tag from '../components/Tag'
+
+const defaultNote = {
+    title:'',
+    content: '',
+    tags: []
+}
+
 export default {
     name: 'Form',
     components: {
@@ -108,12 +117,7 @@ export default {
     },
     data() {
         return {
-            default_note: {
-                title:'',
-                content: '',
-                tags: ''
-            },
-            note: {},
+            note: { ...defaultNote },
             title: '',
             is_edit: false,
             tags: [],
@@ -153,10 +157,11 @@ export default {
 
         },
         set_default () {
-            this.note = {...this.default_note}   
+            this.note = {...this.defaultNote}   
         },
-        tagAdded () {
-            this.getTags()
+        tagAdded (tag) {
+            this.note.tags.push(tag)
+            this.tags.push(tag)
             this.showModalTag = false
         },
         getTags () {
@@ -174,8 +179,6 @@ export default {
         this.note = note 
 
         this.is_edit = true;
-
-        console.log(this.note)
     },
     mounted () {
         this.getTags()

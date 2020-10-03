@@ -79,8 +79,6 @@ export default {
             this.results = results
         },
         selectResult (result) {
-
-            console.log({ result })
             if (result === '' || typeof (result) === 'undefined') return this.$emit('clean', true)
             
             if (result.type === 'tag') {
@@ -103,7 +101,7 @@ export default {
     },
     watch: {
         search (val) {
-            if (val === '' || val === null || typeof(val) === 'undefined' ) return
+            if (val === '' || val === null || typeof(val) === 'undefined' ) return this.$emit('clean', true)
             this.searchResults()
         }
     },
