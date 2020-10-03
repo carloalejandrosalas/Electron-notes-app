@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <Search />
+    <Search @results="getResults($event)" @clean="getNotes" />
     <v-row>
       <v-col v-for="(note, index) in notes" :key="index" cols="12" sm="12" md="6">
         <Note @removedNote="getNotes" :data="note"/>
@@ -31,16 +31,23 @@ export default {
   },
   data () {
     return {
-      notes: store.getNotes()
+      notes: []
     }
   },
   methods: {
     getNotes () {
       this.notes = store.getNotes();
     },
+    getResults (results) {
+      if (Array.isArray(results)) {
+        this.notes = results
+      } else {
+        this.$router.push('/note/' + results.id)
+      }
+    }
   },
   mounted () {
-    this.notes = store.getNotes();
+    this.getNotes();
   }
 }
 </script>

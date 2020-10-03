@@ -14,6 +14,10 @@
         prepend-inner-icon="mdi-magnify"
         hint="You can search title, content or tag"
         persistent-hint
+        @input="selectResult($event)"
+        return-object
+        clear-icon="mdi-close"
+        clearable
       >
         <template v-slot:item="data">
             <template>
@@ -73,11 +77,33 @@ export default {
             })
 
             this.results = results
+        },
+        selectResult (result) {
+
+            console.log({ result })
+            if (result === '' || typeof (result) === 'undefined') return this.$emit('clean', true)
+            
+            if (result.type === 'tag') {
+                const results = []
+                
+                const notes = store.getNotes()
+
+                notes.forEach(note => {
+                    const { tags } = note
+                    tags.forEach(tag => {
+                        if (tag === result.text) results.push(note)
+                    })
+                })
+
+                this.$emit('results', results)
+            } else {
+                this.$emit('results', result.note)
+            }
         }
     },
     watch: {
         search (val) {
-            if (val === '' || val === null ) return
+            if (val === '' || val === null || typeof(val) === 'undefined' ) return
             this.searchResults()
         }
     },
