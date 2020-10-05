@@ -70,8 +70,13 @@
                         deletable-chips
                         color="purple"
                     >
-                    
                     </v-autocomplete>
+                    <v-btn small outlined color="info" to="/tags" style="margin-bottom:30px">
+                        <v-icon left>
+                            mdi-tag
+                        </v-icon>
+                        Manage tags
+                    </v-btn>
                 </v-col>
                 <v-col>
                     <v-btn @click="showModalTag = true"  dark color="purple"  fab >

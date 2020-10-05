@@ -75,5 +75,8 @@ export const store = {
         tags.push(tag)
 
         localStorage.setItem('tags', JSON.stringify(tags))
+    },
+    setTags (tags) {
+        localStorage.setItem('tags', JSON.stringify(tags))
     }
 }
