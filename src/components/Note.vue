@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <v-card>
+        <v-card :color="data.color">
             <v-row>
                 <v-col cols="10">
                     <v-card-title>

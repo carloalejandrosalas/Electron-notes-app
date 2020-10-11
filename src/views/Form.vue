@@ -52,7 +52,7 @@
                 v-model="note.title"
                 required
                 placeholder="Please enter the title"
-                solo
+                outlined
             >
             </v-text-field>
 
@@ -87,8 +87,12 @@
                 </v-col>
             </v-row>
 
+            <v-select outlined label="Note color" placeholder="Pick a color" v-model="note.color" :items="colors"></v-select>
+
             <v-textarea
+                :background-color="note.color"
                 label="Content"
+                :dark="note.color === 'black'"
                 solo
                 description="content of the note"
                 v-model="note.content"
@@ -112,7 +116,8 @@ import Tag from '../components/Tag'
 const defaultNote = {
     title:'',
     content: '',
-    tags: []
+    tags: [],
+    color: 'white'
 }
 
 export default {
@@ -126,7 +131,19 @@ export default {
             title: '',
             is_edit: false,
             tags: [],
-            showModalTag: false
+            showModalTag: false,
+            colors: [
+                'white',
+                'red',
+                'purple',
+                'blue',
+                'deep-purple',
+                'cyan',
+                'orange',
+                'green',
+                'black',
+                'yellow'
+            ]
         }
     },
     methods: {
@@ -162,7 +179,7 @@ export default {
 
         },
         set_default () {
-            this.note = {...this.defaultNote}   
+            this.note = { ...defaultNote }   
         },
         tagAdded (tag) {
             this.note.tags.push(tag)
