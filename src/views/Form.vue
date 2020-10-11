@@ -110,9 +110,12 @@
 </template>
 
 <script>
+// Services
 import { store } from "../services/store";
+// Components
 import Tag from '../components/Tag'
-
+// Constants
+import { COLORS } from '../constants/colors'
 const defaultNote = {
     title:'',
     content: '',
@@ -132,18 +135,7 @@ export default {
             is_edit: false,
             tags: [],
             showModalTag: false,
-            colors: [
-                'white',
-                'red',
-                'purple',
-                'blue',
-                'deep-purple',
-                'cyan',
-                'orange',
-                'green',
-                'black',
-                'yellow'
-            ]
+            colors: COLORS
         }
     },
     methods: {

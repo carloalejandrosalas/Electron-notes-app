@@ -34,8 +34,10 @@
 </template>
 
 <script>
-// TODO Make event to listen filters and notes.
+// Services
 import { store } from '../services/store'
+// Constants
+import { COLORS } from '../constants/colors'
 export default {
     name: 'Search',
     data () {
@@ -76,21 +78,35 @@ export default {
                 })
             })
 
+            COLORS.forEach(color => {
+                if (color.toLowerCase().includes(search)) results.push({
+                    type: 'color',
+                    text: color
+                })
+            })
+
             this.results = results
         },
         selectResult (result) {
             if (result === '' || typeof (result) === 'undefined') return this.$emit('clean', true)
             
-            if (result.type === 'tag') {
+            const { type } = result
+
+            if (type === 'tag' || type === 'color') {
                 const results = []
                 
                 const notes = store.getNotes()
 
                 notes.forEach(note => {
-                    const { tags } = note
-                    tags.forEach(tag => {
-                        if (tag === result.text) results.push(note)
-                    })
+                    if (type === 'tags') {
+                        const { tags } = note
+                        tags.forEach(tag => {
+                            if (tag === result.text) results.push(note)
+                        })
+                    } else {
+                        const { color } = note
+                        if (color === result.text) results.push(note)
+                    }
                 })
 
                 this.$emit('results', results)
@@ -114,6 +130,8 @@ export default {
                     return 'mdi-tag'
                 case 'content':
                     return 'mdi-card-text'
+                case 'color':
+                    return 'mdi-palette'
             }
         }
     }
