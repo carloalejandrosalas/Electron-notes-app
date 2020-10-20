@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <v-card :color="data.color">
+        <v-card :light="isLight" :dark="!isLight" :color="data.color">
             <v-row>
                 <v-col cols="10">
                     <v-card-title>
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { lightColors } from '../constants/colors';
 import { store } from '../services/store'
 
 export default {
@@ -102,6 +103,9 @@ export default {
     computed: {
         getContent() {
            return this.data.content.substr(0, 300)+"..."
+        },
+        isLight () {
+            return lightColors.includes(this.data.color)
         }
     }
 }

@@ -5,7 +5,7 @@
                 <v-col> 
                     <v-row>
                         <v-col cols="2">
-                            <v-btn color="blue-grey lighten-5" large  title="back" to="/">
+                            <v-btn color="" large  title="back" to="/">
                                 <v-icon>
                                     mdi-chevron-left
                                 </v-icon>
@@ -92,8 +92,9 @@
             <v-textarea
                 :background-color="note.color"
                 label="Content"
-                :dark="note.color === 'black'"
+                :light="isLight"
                 solo
+                :dark="!isLight"
                 description="content of the note"
                 v-model="note.content"
                 placeholder="Enter something..." 
@@ -115,7 +116,7 @@ import { store } from "../services/store";
 // Components
 import Tag from '../components/Tag'
 // Constants
-import { COLORS } from '../constants/colors'
+import { COLORS, lightColors } from '../constants/colors'
 const defaultNote = {
     title:'',
     content: '',
@@ -193,6 +194,11 @@ export default {
         this.note = note 
 
         this.is_edit = true;
+    },
+    computed: {
+        isLight () {
+            return lightColors.includes(this.note.color)
+        }
     },
     mounted () {
         this.getTags()

@@ -10,3 +10,9 @@ export const COLORS = [
     'black',
     'yellow'
 ]
+
+export const lightColors = [
+    'white',
+    'cyan',
+    'yellow'
+]
