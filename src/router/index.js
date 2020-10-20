@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Form from '../views/Form.vue'
 import Tags from '../views/Tags.vue'
+import Wizard from '../views/Wizard.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ Vue.use(VueRouter)
     path: '/tags',
     name: 'Tags',
     component: Tags
+  },
+  {
+    path: '/wizard',
+    name: 'Wizard',
+    component: Wizard
   }
 ]
 
