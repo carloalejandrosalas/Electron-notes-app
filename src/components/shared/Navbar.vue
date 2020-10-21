@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card color="purple darken-3" >
+    <v-card color="">
       <v-card-text>
         <v-row>
           <v-col sm="1">
@@ -11,7 +11,7 @@
             </v-btn>
           </v-col>
           <v-col>
-            <h1 class="navbar__title mt-2">Electron Vue Note</h1>
+            <h1 class="navbar__title mt-2 purple--text darken-3">Electro Vue Note</h1>
           </v-col>
         </v-row>
 
@@ -21,10 +21,15 @@
         v-model="drawer"
         absolute
         temporary
+        color="purple darken-3"
       >
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>Menu</v-list-item-title>
+            <v-list-item-title>
+              <span class="text-uppercase font-weight-bold">
+                Menu
+              </span>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
