@@ -66,7 +66,13 @@ export const store = {
     },
 
     getTags () {
-        return JSON.parse(localStorage.getItem('tags')) || []
+        const tags = JSON.parse(this.get('tags'))
+
+        if (Array.isArray(tags)) {
+            return tags
+        }
+
+        return []
     },
     
     addTag (tag) {
@@ -78,5 +84,21 @@ export const store = {
     },
     setTags (tags) {
         localStorage.setItem('tags', JSON.stringify(tags))
+    },
+    importNotes (importNotes) {
+        const notes = this.getNotes()
+        
+        const newNotes = notes.concat(importNotes)
+
+        console.log('notes', importNotes)
+
+        this.set('notes', JSON.stringify(newNotes))
+    },
+    importTags (importTags) {
+        const tags = this.getTags()
+
+        const newTags = tags.concat(importTags)
+
+        this.set('tags', JSON.stringify(newTags))
     }
 }

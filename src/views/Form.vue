@@ -117,12 +117,10 @@ import { store } from "../services/store";
 import Tag from '../components/Tag'
 // Constants
 import { COLORS, lightColors } from '../constants/colors'
-const defaultNote = {
-    title:'',
-    content: '',
-    tags: [],
-    color: 'white'
-}
+// Models
+import { Note } from '../models/Note'
+
+const defaultNote = new Note()
 
 export default {
     name: 'Form',

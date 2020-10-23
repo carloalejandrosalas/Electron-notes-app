@@ -64,11 +64,15 @@ export default {
                     note: note
                 })
                 
-                if (content.toLowerCase().includes(search)) results.push({
-                    type: 'content',
-                    text: note.content,
-                    note: note
-                })
+                if (content.toLowerCase().includes(search)) {
+                  const { content: noteContent } = note
+                  const content = noteContent.length <= 50 ? noteContent : noteContent.substring(0, 50) + '...'
+                  results.push({
+                      type: 'content',
+                      text:  content,
+                      note: note
+                  })
+                }
             })
 
             tags.forEach(tag => {
