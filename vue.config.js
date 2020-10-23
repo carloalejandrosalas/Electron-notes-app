@@ -3,6 +3,7 @@ module.exports = {
     "electronBuilder": {
       "builderOptions": {
         "appId": "com.carloalejandrosalas.notes",
+        "productName": "Electro Vue Notes",
         "linux": {
           "category": "Utility",
           "target": [

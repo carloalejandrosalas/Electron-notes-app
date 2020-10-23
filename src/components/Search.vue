@@ -102,11 +102,11 @@ export default {
                 const notes = store.getNotes()
 
                 notes.forEach(note => {
-                    if (type === 'tags') {
+                    if (type === 'tag') {
                         const { tags } = note
-                        tags.forEach(tag => {
-                            if (tag === result.text) results.push(note)
-                        })
+                        if (tags.includes(result.text)) {
+                            results.push(note)
+                        }
                     } else {
                         const { color } = note
                         if (color === result.text) results.push(note)
