@@ -14,7 +14,7 @@
               </v-checkbox>
               <v-checkbox v-model="options" value="tags" :label="`Export all tags (${tags.length})`">
               </v-checkbox>
-              <v-btn @click="exportData" class="mt-4" color="purple darken-3">
+              <v-btn :disabled="options.length < 1" @click="exportData" class="mt-4" color="purple darken-3">
                 <v-icon left>
                   mdi-export
                 </v-icon>
