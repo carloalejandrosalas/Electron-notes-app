@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <v-card :light="isLight" :dark="!isLight" :color="data.color">
+        <v-card @dblclick="edit" :light="isLight" :dark="!isLight" :color="data.color">
             <v-row>
                 <v-col cols="10">
                     <v-card-title>
