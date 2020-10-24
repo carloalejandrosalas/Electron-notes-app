@@ -87,7 +87,8 @@ export default {
     methods: {
         remove() {
             store.removeNote(this.data.id);
-            this.$emit('removedNote')
+            this.showConfirm = false
+            this.$emit('removedNote', this.data)
 
             this.$store.commit('toast', {
                 color: 'dark',

@@ -3,7 +3,7 @@
     <Search @results="getResults($event)" @clean="getNotes" />
     <v-row>
       <v-col v-for="(note, index) in notes" :key="index" cols="12" sm="12" md="6">
-        <Note @removedNote="getNotes" :data="note"/>
+        <Note @removedNote="removeNote($event)" :data="note"/>
       </v-col>
     </v-row>
     <h1 v-if="notes.length < 1">
@@ -44,6 +44,16 @@ export default {
       } else {
         this.$router.push('/note/' + results.id)
       }
+    },
+    removeNote (note) {
+      const notes = [...this.notes]
+
+      const idx = notes.findIndex(item => item.id === note.id)
+
+      notes.splice(idx, 1)
+
+      this.notes = [...notes]
+
     }
   },
   mounted () {

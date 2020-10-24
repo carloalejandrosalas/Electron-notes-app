@@ -20,6 +20,7 @@ function createWindow () {
     nodeIntegration: true
   } })
 
+  win.setTitle('Electro Vue Note')
   win.maximize()
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
