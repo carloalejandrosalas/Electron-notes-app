@@ -1,7 +1,19 @@
 <template>
-  <div id="app">
-    <b-container class="my-3">
+  <v-app id="app">
+    <Navbar/>
+    <v-container class="my-3">
       <router-view/>
-    </b-container>
-  </div>
+    </v-container>    
+    <Toast />
+  </v-app>
 </template>
+<script>
+import Navbar from './components/shared/Navbar'
+import Toast from './components/Toast'
+export default {
+  components: {
+    Navbar,
+    Toast
+  }  
+}
+</script>

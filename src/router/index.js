@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Form from '../views/Form.vue'
+import Tags from '../views/Tags.vue'
+import Wizard from '../views/Wizard.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +22,16 @@ Vue.use(VueRouter)
     path: '/note/:id',
     name: 'View',
     component: Form
+  },
+  {
+    path: '/tags',
+    name: 'Tags',
+    component: Tags
+  },
+  {
+    path: '/wizard',
+    name: 'Wizard',
+    component: Wizard
   }
 ]
 

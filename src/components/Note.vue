@@ -1,59 +1,133 @@
 <template>
-    <b-card>
-        <b-row>
-            <b-col cols="10">
-                <h4>
-                    {{data.title}}
-                </h4>        
-            </b-col>
-                <b-dropdown variant="link" no-caret>
-                    <template v-slot:button-content>
-                        <b-icon class="text-dark" icon="three-dots-vertical"></b-icon>
-                    </template>
+    <div>
 
-                    <b-dropdown-item :to="'/note/'+data.id">Open</b-dropdown-item>
-                    <b-dropdown-item @click="remove">Remove</b-dropdown-item>
-
+        <v-card @dblclick="edit" :light="isLight" :dark="!isLight" :color="data.color">
+            <v-row>
+                <v-col cols="10">
+                    <v-card-title>
+                        {{ data.title }}
+                    </v-card-title>
+                </v-col>
+                <v-col>
+                    <v-menu>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                text
+                                color="dark"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <v-icon>
+                                    mdi-dots-vertical
+                                </v-icon>
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item @click="edit">
+                                Edit
+                            </v-list-item>
+                            <v-list-item @click="showConfirm = true">
+                                Delete
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-col>
+            </v-row>
+            <v-card-text>
+                <p>
+                    {{ getContent }}
+                </p>
+                <span>
+                    <v-chip class="ml-2" label pill :ripple="false" @click="searchTag(tag)" v-for="(tag, idx) in data.tags" :key="idx">
+                        <v-icon left>
+                            mdi-label
+                        </v-icon>
+                        {{ tag }}
+                    </v-chip>
+                </span>
                     
-                </b-dropdown>
-            <b-col cols="2">
+            </v-card-text>
+        </v-card>
 
-            </b-col>
-        </b-row>
-        {{ getContent }}
-
-    </b-card>
+        <v-dialog
+            v-model="showConfirm"
+            max-width="290"
+            persistent
+        >
+        <v-card>
+            <v-card-title>
+                Are you shure?
+            </v-card-title>
+            <v-card-text>
+                You're going to remove the note <strong>{{ data.title }}</strong>, this operation is irreversible
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="remove" text color="error" small>
+                    <v-icon left>
+                        mdi-delete
+                    </v-icon>
+                    Yes
+                </v-btn>
+                <v-btn @click="showConfirm = false" text small>
+                    <v-icon>
+                        mdi-close
+                    </v-icon>
+                    Cancel
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
+import { lightColors } from '../constants/colors';
+import { Note } from '../models/Note';
 import { store } from '../services/store'
-const {dialog} = require('electron').remote
-
 
 export default {
     name: 'Note',
     props: {
-        data: Object
+        data: Note
+    },
+    data () {
+        return {
+            showConfirm: false
+        }
     },
     methods: {
         remove() {
-            dialog.showMessageBox(null, {
-                title: '¿Are you shure?',
-                type: 'warning',
-                buttons: ["Yes","Cancel"],
-                message: "You're going to remove this note, this operation is irreversible"
-                
-            }, (value) => {
-                if(value === 0) {
-                    store.removeNote(this.data.id);
-                    this.$emit('removedNote')
-                }
+            store.removeNote(this.data.id);
+            this.showConfirm = false
+            this.$emit('removedNote', this.data)
+
+            this.$store.commit('toast', {
+                color: 'dark',
+                html: `The note <strong>${this.data.title}</strong> was removed succesfuly`,
+                icon: 'mdi-delete',
+                timeout: 4000
             })
+        },
+        edit () {
+            this.$router.push('/note/' + this.data.id)
+        },
+        searchTag (tag) {
+            this.$emit('searchTag', tag)
         }
     },
     computed: {
         getContent() {
-           return this.data.content.substr(0, 300)+"..."
+            const { content } = this.data
+            
+            if (content.length <= 300) {
+                return content
+            } else {
+                return `${content.substring(0, 300)}...`
+            }
+        },
+        isLight () {
+            return lightColors.includes(this.data.color)
         }
     }
 }

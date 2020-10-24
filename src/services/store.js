@@ -1,3 +1,4 @@
+import { Note } from '../models/Note'
 export const store = {
 
     get(name) {
@@ -52,7 +53,10 @@ export const store = {
 
         if(Array.isArray(notes)) {
             
-            return notes;
+            return notes.map(note => {
+                const { title, content, tags, color, id } = note
+                return new Note(title, content, tags, color, id)
+            });
           
         }
 
@@ -63,6 +67,42 @@ export const store = {
 
     set(name, value) {
         localStorage.setItem(name, value)
-    }
+    },
 
+    getTags () {
+        const tags = JSON.parse(this.get('tags'))
+
+        if (Array.isArray(tags)) {
+            return tags
+        }
+
+        return []
+    },
+    
+    addTag (tag) {
+        const tags = this.getTags()
+
+        tags.push(tag)
+
+        localStorage.setItem('tags', JSON.stringify(tags))
+    },
+    setTags (tags) {
+        localStorage.setItem('tags', JSON.stringify(tags))
+    },
+    importNotes (importNotes) {
+        const notes = this.getNotes()
+        
+        const newNotes = notes.concat(importNotes)
+
+        console.log('notes', importNotes)
+
+        this.set('notes', JSON.stringify(newNotes))
+    },
+    importTags (importTags) {
+        const tags = this.getTags()
+
+        const newTags = tags.concat(importTags)
+
+        this.set('tags', JSON.stringify(newTags))
+    }
 }
