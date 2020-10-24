@@ -1,9 +1,9 @@
 <template>
   <v-container fluid>
-    <Search @results="getResults($event)" @clean="getNotes" />
+    <Search :searchTag.sync="searchTag" @results="getResults($event)" @clean="clean" />
     <v-row>
       <v-col v-for="(note, index) in notes" :key="index" cols="12" sm="12" md="6">
-        <Note @removedNote="removeNote($event)" :data="note"/>
+        <Note @searchTag="searchTag = $event" @removedNote="removeNote($event)" :data="note"/>
       </v-col>
     </v-row>
     <h1 v-if="notes.length < 1">
@@ -31,7 +31,8 @@ export default {
   },
   data () {
     return {
-      notes: []
+      notes: [],
+      searchTag: ''
     }
   },
   methods: {
@@ -54,6 +55,10 @@ export default {
 
       this.notes = [...notes]
 
+    },
+    clean () {
+      this.getNotes()
+      this.searchTag = ''
     }
   },
   mounted () {

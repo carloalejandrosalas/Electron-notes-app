@@ -1,3 +1,4 @@
+import { Note } from '../models/Note'
 export const store = {
 
     get(name) {
@@ -52,7 +53,10 @@ export const store = {
 
         if(Array.isArray(notes)) {
             
-            return notes;
+            return notes.map(note => {
+                const { title, content, tags, color, id } = note
+                return new Note(title, content, tags, color, id)
+            });
           
         }
 

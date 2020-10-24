@@ -40,6 +40,9 @@ import { store } from '../services/store'
 import { COLORS } from '../constants/colors'
 export default {
     name: 'Search',
+    props: {
+        searchTag: String
+    },
     data () {
         return {
             result: '',
@@ -121,8 +124,26 @@ export default {
     },
     watch: {
         search (val) {
-            if (val === '' || val === null || typeof(val) === 'undefined' ) return this.$emit('clean', true)
-            this.searchResults()
+            if (val === '' || val === null || typeof(val) === 'undefined' ) {
+                return this.$emit('clean', true)
+            } else if (this.searchTag === '') {
+                this.searchResults()
+            } else {
+                this.$emit('update:searchTag', '')
+            }
+        },
+        searchTag (val) {
+            if (typeof (val) === 'string' && val !== '') {
+                console.log('search tag')
+
+                this.search = val
+
+                this.selectResult({
+                    type: 'tag',
+                    text: val
+                })
+
+            }
         }
     },
     filters: {

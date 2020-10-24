@@ -34,7 +34,18 @@
                 </v-col>
             </v-row>
             <v-card-text>
-                {{ getContent }}
+                <p>
+                    {{ getContent }}
+                </p>
+                <span>
+                    <v-chip class="ml-2" label pill :ripple="false" @click="searchTag(tag)" v-for="(tag, idx) in data.tags" :key="idx">
+                        <v-icon left>
+                            mdi-label
+                        </v-icon>
+                        {{ tag }}
+                    </v-chip>
+                </span>
+                    
             </v-card-text>
         </v-card>
 
@@ -72,12 +83,13 @@
 
 <script>
 import { lightColors } from '../constants/colors';
+import { Note } from '../models/Note';
 import { store } from '../services/store'
 
 export default {
     name: 'Note',
     props: {
-        data: Object
+        data: Note
     },
     data () {
         return {
@@ -99,11 +111,20 @@ export default {
         },
         edit () {
             this.$router.push('/note/' + this.data.id)
+        },
+        searchTag (tag) {
+            this.$emit('searchTag', tag)
         }
     },
     computed: {
         getContent() {
-           return this.data.content.substr(0, 300)+"..."
+            const { content } = this.data
+            
+            if (content.length <= 300) {
+                return content
+            } else {
+                return `${content.substring(0, 300)}...`
+            }
         },
         isLight () {
             return lightColors.includes(this.data.color)
