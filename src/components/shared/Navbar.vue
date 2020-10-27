@@ -51,6 +51,13 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <v-list>
+          <v-list-item>
+            <small>
+              version {{ version }}
+            </small>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
   </div>
 </template>
@@ -59,6 +66,7 @@ export default {
   name: 'Navbar',
   data () {
     return {
+      version: process.env.VUE_APP_VERSION,
       drawer: false,
       items: [
         {

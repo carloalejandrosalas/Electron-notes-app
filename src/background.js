@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, screen } from 'electron'
+import { app, protocol, BrowserWindow, screen, Menu, shell } from 'electron'
 import {
   createProtocol,
   installVueDevtools
@@ -34,12 +34,53 @@ function createWindow () {
   }
 
   win.on('ready-to-show', () => {
+    createMenu()
     win.show()
   })
 
   win.on('closed', () => {
     win = null
   })
+}
+
+function createMenu () {
+  const isMac = process.platform === 'darwin'
+  
+  const template = [
+    {
+      label: 'File',
+      submenu: [
+        isMac ? { role: 'close' } : { role: 'quit' }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      label: 'About',
+      submenu: [
+        {
+          label: 'Author',
+          click: () => openExternal('https://github.com/carloalejandrosalas')
+        },
+        {
+          label: 'Github Repository',
+          click: () => openExternal('https://github.com/carloalejandrosalas/Electron-notes-app')
+        },
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+
+  Menu.setApplicationMenu(menu)
+}
+
+function openExternal (url) {
+  shell.openExternalSync(url)
 }
 
 // Quit when all windows are closed.
